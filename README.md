@@ -134,6 +134,7 @@ VALUES
 (10, '2024-12-15', 90.00);
 (10, '2024-12-25', 180.00);
 ```
+
 | customer_id | order_date | total_amount |
 | :---------: | :--------: | :----------: |
 |      1      | 2024-12-01 |    50.00     |
@@ -212,3 +213,69 @@ LIMIT 3;
 ```
 
 ![alt text](./imgs/q5.png)
+
+
+6. Get the names of customers who have ordered Product A
+
+```sql
+SELECT DISTINCT c.name
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+JOIN order_items oi ON o.id = oi.order_id
+JOIN products p ON oi.product_id = p.id
+WHERE p.name = 'Product A';
+```
+![alt text](./imgs/q6.png)
+
+
+7. Join the orders and customers tables to retrieve the customer's name and order date for each order
+
+```sql
+SELECT c.name, o.order_date
+FROM customers c
+JOIN orders o ON c.id = o.customer_id;
+```
+
+
+![alt text](./imgs/q7.png)
+
+
+
+8. Retrieve the orders with a total amount greater than 150.00
+```sql
+SELECT *
+FROM orders
+WHERE total_amount > 150.00;
+```
+
+
+![alt text](./imgs/q8.png)
+
+
+
+9. Normalize the database Create a separate table for order items
+
+```sql
+CREATE TABLE order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+```
+![alt text](./imgs/q9.png)
+
+
+
+10. Retrieve the average total of all orders
+
+```sql
+SELECT AVG(total_amount) AS average_order_total
+FROM orders;
+```
+
+
+![alt text](./imgs/q10.png)
+
